@@ -10,7 +10,7 @@
             var previousMeasurement = -1;
             var increaseCount = 0;
 
-            foreach (string line in System.IO.File.ReadLines(@"AppData\day1.txt"))
+            foreach (string line in System.IO.File.ReadLines(@"AppData\fulldata.txt"))
             {
                 var newMeasurement = Convert.ToInt32(line);
                 if(newMeasurement > previousMeasurement && previousMeasurement != -1) increaseCount++;
@@ -28,7 +28,7 @@
             var secondWindow = -1;
             var increaseCount = 0;
 
-            foreach (string line in System.IO.File.ReadLines(@"AppData\day1.txt"))
+            foreach (string line in System.IO.File.ReadLines(@"AppData\fulldata.txt"))
             {
                 var newMeasurement = Convert.ToInt32(line);
 

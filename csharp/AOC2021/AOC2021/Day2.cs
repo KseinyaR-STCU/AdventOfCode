@@ -10,7 +10,7 @@
             var horizontal = 0;
             var vertical = 0;
 
-            foreach (string line in System.IO.File.ReadLines(@"AppData\day2.txt"))
+            foreach (string line in System.IO.File.ReadLines(@"AppData\fulldata.txt"))
             {
                 var courseValues = line.Split(' ');
                 var direction = courseValues[0];
@@ -38,7 +38,7 @@
             var vertical = 0;
             var aim = 0;
 
-            foreach (string line in System.IO.File.ReadLines(@"AppData\day2.txt"))
+            foreach (string line in System.IO.File.ReadLines(@"AppData\fulldata.txt"))
             {
                 var courseValues = line.Split(' ');
                 var direction = courseValues[0];
@@ -58,7 +58,7 @@
                 }
             }
 
-            Console.WriteLine("Part 1: " + horizontal * vertical);
+            Console.WriteLine("Part 2: " + horizontal * vertical);
         }
 
 
