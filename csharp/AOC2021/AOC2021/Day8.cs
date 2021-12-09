@@ -30,8 +30,8 @@
             foreach (string line in System.IO.File.ReadLines(@"AppData\fulldata.txt"))
             {
                 var splitLine = line.Split('|');
-                var signals = splitLine[0].Split(' ').Select(x => x.Trim()).ToList();
-                var outputs = splitLine[1].Split(' ').Select(x => x.Trim()).ToList();
+                var signals = splitLine[0].Split(' ').Select(x => Alphabetize(x.Trim())).ToList();
+                var outputs = splitLine[1].Split(' ').Select(x => Alphabetize(x.Trim())).ToList();
 
                 //obvious ones
                 var realOne = signals.First(x => x.Length == 2);
@@ -66,16 +66,16 @@
                 var number = "";
                 foreach (var output in outputs.Where(x => !String.IsNullOrWhiteSpace(x)))
                 {
-                    if (containsAllChars(output, realZero)) number += "0";
-                    else if (containsAllChars(output,realOne)) number += "1";
-                    else if (containsAllChars(output,realTwo)) number += "2";
-                    else if (containsAllChars(output, realThree)) number += "3";
-                    else if (containsAllChars(output, realFour)) number += "4";
-                    else if (containsAllChars(output, realFive)) number += "5";
-                    else if (containsAllChars(output, realSix)) number += "6";
-                    else if (containsAllChars(output, realSeven)) number += "7";
-                    else if (containsAllChars(output, realNine)) number += "9";
-                    else if (containsAllChars(output, realEight)) number += "8";
+                    if (output == realZero) number += "0";
+                    else if (output == realOne) number += "1";
+                    else if (output == realTwo) number += "2";
+                    else if (output == realThree) number += "3";
+                    else if (output == realFour) number += "4";
+                    else if (output == realFive) number += "5";
+                    else if (output == realSix) number += "6";
+                    else if (output == realSeven) number += "7";
+                    else if (output == realNine) number += "9";
+                    else if (output == realEight) number += "8";
                 }
 
                 var actualOutput = Convert.ToInt32(number);
@@ -84,6 +84,11 @@
 
             }
             Console.WriteLine("Part 2: " + (totalCount));
+        }
+
+        private static string Alphabetize(string input)
+        {
+            return String.Concat(input.OrderBy(x => x));
         }
 
         //ew
@@ -99,11 +104,6 @@
         {
             return (possibleZero.Contains(one[0])
                 && possibleZero.Contains(one[1]));
-        }
-
-        private static bool containsAllChars(string output, string number)
-        {
-            return output.Length == number.Length && output.All(x => number.Contains(x));
         }
     }
 }
