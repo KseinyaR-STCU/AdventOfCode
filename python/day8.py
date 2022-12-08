@@ -15,31 +15,31 @@ for line in data:
 width = len(trees)
 height = len(trees[1])
 
-visible = 0
+def checkTreeHorizontal(x, irange, t):
+    for i in irange:
+        if(trees[x][i] >= t):
+            return False
+    return True
 
 def checkTreeLeft(x, y, t):
-    for i in range(0, y):
-        if(trees[x][i] >= t):
-            return 0
-    return 1
+    return checkTreeHorizontal(x, range(0, y), t)
 
 def checkTreeRight(x, y, t):
-    for i in range(y + 1, width):
-        if(trees[x][i] >= t):
-            return 0
-    return 1
+    return checkTreeHorizontal(x, range(y + 1, width), t)
+
+def checkTreeVertical(y, irange, t):
+    for i in irange:
+        if(trees[i][y] >= t):
+            return False
+    return True
 
 def checkTreeDown(x, y, t):
-    for i in range(0, x):
-        if(trees[i][y] >= t):
-            return 0
-    return 1
+    return checkTreeVertical(y, range(0, x), t)
 
 def checkTreeUp(x, y, t):
-    for i in range(x + 1, height):
-        if(trees[i][y] >= t):
-            return 0
-    return 1
+    return checkTreeVertical(y, range(x + 1, height), t)
+
+visible = 0
 
 for x, tree in enumerate(trees):
     if(x == 0 or x == width -1):
@@ -49,60 +49,44 @@ for x, tree in enumerate(trees):
             if(y == 0 or y == height -1):
                 visible += 1
             else:
-                isVisible = 0
-                isVisible = checkTreeLeft(x, y, t)
-                if(isVisible == 0):
-                    isVisible = checkTreeRight(x, y, t)
-                if(isVisible == 0):
-                    isVisible = checkTreeDown(x, y, t)
-                if(isVisible == 0):
-                    isVisible = checkTreeUp(x, y, t)
-                visible += isVisible
+                if(checkTreeLeft(x, y, t)
+                or checkTreeRight(x, y, t)
+                or checkTreeDown(x, y, t)
+                or checkTreeUp(x, y, t)):
+                    visible += 1
 
 
 print('part 1')
 print(visible)
 
-
-def addTreeLeft(x, y, t):
+def addTreeHorizontal(x, irange, t):
     count = 0
-    for i in range(y - 1, -1, -1):
+    for i in irange:
+        count +=1
         if(trees[x][i] >= t):
-            count +=1
             return count
-        else:
-            count +=1
     return count
 
+def addTreeLeft(x, y, t):
+    return addTreeHorizontal(x, range(y - 1, -1, -1), t)
+
 def addTreeRight(x, y, t):
+    return addTreeHorizontal(x, range(y + 1, width), t)
+
+def addTreeVertical(y, irange, t):
     count = 0
-    for i in range(y + 1, width):
-        if(trees[x][i] >= t):
-            count +=1
+    for i in irange:
+        count +=1
+        if(trees[i][y] >= t):
             return count
-        else:
-            count +=1
+            
     return count
 
 def addTreeDown(x, y, t):
-    count = 0
-    for i in range(x - 1, -1 , -1):
-        if(trees[i][y] >= t):
-            count +=1
-            return count
-        else:
-            count +=1
-    return count
+    return addTreeVertical(y, range(x - 1, -1 , -1), t)
 
 def addTreeUp(x, y, t):
-    count = 0
-    for i in range(x + 1, height):
-        if(trees[i][y] >= t):
-            count +=1
-            return count
-        else:
-            count +=1
-    return count
+    return addTreeVertical(y, range(x + 1, height), t)
 
 highestCount = 0
 
@@ -114,12 +98,7 @@ for x, tree in enumerate(trees):
             if(y == 0 or y == height -1):
                 score = 0
             else:
-                left = addTreeLeft(x, y, t)
-                right = addTreeRight(x, y, t)
-                up = addTreeUp(x, y, t)
-                down = addTreeDown(x, y, t)
-
-                score = up * down * left * right
+                score = addTreeUp(x, y, t) * addTreeDown(x, y, t) * addTreeLeft(x, y, t) * addTreeRight(x, y, t)
                 if(score > highestCount):
                     highestCount = score
 
