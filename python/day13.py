@@ -1,7 +1,7 @@
 
 def read_data():
     fileName = 'testdata.txt'
-    # fileName = 'fulldata.txt'
+    fileName = 'fulldata.txt'
     with open(fileName) as f:
         return [l.rstrip() for l in f.readlines()]
 
@@ -135,18 +135,36 @@ print('part 1')
 print(sum(goods))
 
 
-# i gave up and sorted manually lol
-# allPackets = []
 
-# for line in data:
-#     if(line == ''):
-#         continue
+#part 2
+from functools import cmp_to_key
+allPackets = []
 
-#     allPackets.append(eval(line))
+allPackets.append([[2]])
+allPackets.append([[6]])
 
-# allPackets.append([[2]])
-# allPackets.append([[6]])
+for line in data:
+    if(line == ''):
+        continue
 
-# allPackets.sort()
+    allPackets.append(eval(line))
 
-# print(allPackets)
+def getFirstInt(x):
+    for i in x:
+        if(type(i) == int):
+            return i
+        else:
+            return getFirstInt(i)
+    return 0
+
+def sortPacket(x, y):
+    return getFirstInt(x) - getFirstInt(y)
+
+sortz = sorted(allPackets, key=cmp_to_key(sortPacket))
+
+print('part 2')
+
+for i in sortz:
+    print(i)
+
+print((sortz.index([[2]]) + 1) * (sortz.index([[6]]) + 1))
