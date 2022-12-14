@@ -130,8 +130,6 @@ for move in moves:
     froms = int(move[1]) -1
     to = int(move[2]) -1
 
-
-
     temps = []
     for num in range(count):
         temps.append(stacks[froms].pop())

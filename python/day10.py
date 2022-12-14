@@ -10,6 +10,8 @@ data = read_data()
 cycle = 0
 register = 1
 cycles = [20, 60, 100, 140, 180, 220]
+# cycles = list(range(20,220+1,40))
+# cycles = [item for item in range(20, 220+1, 40)]
 
 strengths = []
 pixels = []

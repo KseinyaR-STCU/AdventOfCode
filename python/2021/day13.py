@@ -23,7 +23,6 @@ for line in data:
         instructions.append([splitz[0][-1], splitz[1]])
 
 def foldY(count):
-    
     for i, dot in enumerate(dots):
         splitz = dot.split(',')
         dotint = int(splitz[0])

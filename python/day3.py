@@ -3,11 +3,6 @@ secondHalf = []
 
 sum = 0
 
-# print(ord('a'))
-# print(ord('z'))
-# print(ord('A'))
-# print(ord('Z'))
-
 with open('fulldata.txt') as f:
     for line in f:
         full = line.rstrip()

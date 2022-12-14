@@ -1,24 +1,10 @@
 from collections import defaultdict, deque
-import math
+from methods import read_data, splitNumsWholeGrid, bfs
 
-def read_data():
-    fileName = 'testdata.txt'
-    fileName = 'fulldata.txt'
-    with open(fileName) as f:
-        return [l.rstrip() for l in f.readlines()]
+data = read_data('testdata.txt')
+# data = read_data('fulldata.txt')
 
-data = read_data()
-
-risks = []
-
-for line in data:
-    risks.append(list(map(lambda n: int(n), line[::1])))
-
-width = len(risks[0])
-height = len(risks)
-
-start = (0,0)
-end = (width -1, height -1)
+risks = splitNumsWholeGrid(data)
 
 def check(newX, newY):
     return (
@@ -27,40 +13,14 @@ def check(newX, newY):
         and (newX) < height
         and (newX) >= 0)
 
-def step(start):
+width = len(risks[0])
+height = len(risks)
 
-    cellrisks = defaultdict(lambda: 1e9)
-    cellrisks[start] = 0
-    visited = set()
-    queueue = deque()
-
-    queueue.append(start)
-
-    while queueue:
-        current = queueue.popleft()
-        X = current[0]
-        Y = current[1]
-
-        if (X,Y) in visited:
-            continue
-
-        visited.add((X,Y))
-        
-        if(current == end):
-            print(cellrisks[end])
-
-        newCount = cellrisks[current] + risks[X][Y]
-
-        points = [(X, Y+1), (X, Y-1), (X+1, Y), (X-1, Y)]
-
-        for p in points:
-            if(p not in visited and check(p[0], p[1])):
-                cellrisks[p] = min(newCount, cellrisks[p])
-                queueue.append(p)
-
+start = (0,0)
+end = (width -1, height -1)
 
 print('part 1')
-step(start)
+print(bfs(start, end, check, risks))
 
 def getNum(n, i):
     if(n + i > 9):
@@ -87,14 +47,12 @@ for i in range(5):
     for x in tempList:
         risks2.append(multiplyList(x, i))
 
-risks = risks2
-width = len(risks[0])
-height = len(risks)
+width = len(risks2[0])
+height = len(risks2)
 
 start = (0,0)
 end = (width -1, height -1)
 
+## this is still wrong and idk whyyyyyy
 print('part 2')
-step(start)
-print('plus ' + str(risks[end[0]][end[1]]))
-print('minus ' + str(risks[start[0]][start[1]]))
+print(bfs(start, end, check, risks2))
