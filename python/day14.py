@@ -1,12 +1,8 @@
 import math
+from methods import read_data
 
-def read_data():
-    fileName = 'testdata.txt'
-    fileName = 'fulldata.txt'
-    with open(fileName) as f:
-        return [l.rstrip() for l in f.readlines()]
-
-data = read_data()
+data = read_data('testdata.txt')
+# data = read_data('fulldata.txt')
 
 
 minX = 1000
@@ -96,7 +92,6 @@ dropY = 0
 
 sandCount = 0
 abyss = False
-
 
 while(not abyss):
     sandMoves = True

@@ -12,7 +12,6 @@ justFlashed = []
 for line in data:
     octoList.append(list(map(lambda n: int(n), line[::1])))
 
-
 def up():
     for x, octopi in enumerate(octoList):
         for y, octo in enumerate(octopi):

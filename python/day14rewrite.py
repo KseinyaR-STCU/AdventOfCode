@@ -1,19 +1,9 @@
-import math
+from methods import getPoints, read_data
 
-def read_data():
-    fileName = 'testdata.txt'
-    fileName = 'fulldata.txt'
-    with open(fileName) as f:
-        return [l.rstrip() for l in f.readlines()]
+data = read_data('testdata.txt')
+data = read_data('fulldata.txt')
 
-data = read_data()
-
-minX = 1000
-maxX, maxY = 0, 0
-
-# this is still kinda gross
 def getAllLines():
-    global minX, maxX, maxY
     lines = set()
 
     for line in data:
@@ -23,25 +13,13 @@ def getAllLines():
             c = i.split(',')
             point = (int(c[0]), int(c[1]))
             points.append(point)
-            minX = min(minX, point[0])
-            maxX = max(maxX, point[0])
-            maxY = max(maxY, point[1])
-
+        
         for p, point in enumerate(points):
             lines.add(point)
             if(p == len(points) -1):
                 continue
 
-            xs = list(range(point[0], points[p+1][0], 1))
-            xs.extend(range(points[p+1][0], point[0],  1))
-            ys = list(range(point[1], points[p+1][1], 1))
-            ys.extend(range(points[p+1][1], point[1],  1))
-
-            for x in xs:
-                lines.add((x, point[1]))
-
-            for y in ys:
-                lines.add((point[0], y))
+            lines = lines.union(getPoints(point, points[p+1]))
     
     return lines
 
@@ -93,6 +71,10 @@ def dropSand():
 
 lines = getAllLines()
 blocks = getBlocks()
+
+minX = min(list(map(lambda n: n[0], lines)))
+maxX = max(list(map(lambda n: n[0], lines)))
+maxY = max(list(map(lambda n: n[1], lines)))
 
 dropX = 500
 dropY = 0
