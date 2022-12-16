@@ -22,6 +22,9 @@ end = (width -1, height -1)
 print('part 1')
 print(bfs(start, end, check, risks))
 
+
+#### part 2
+
 def getNum(n, i):
     if(n + i > 9):
         return (n + i) - 9
