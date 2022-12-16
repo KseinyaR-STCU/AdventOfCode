@@ -93,3 +93,23 @@ def bfs(start, end, isValid, risks):
                 queueue.append(p)
     
     return cellrisks[end]
+
+
+# hex to binary
+def hex2b(hex):
+    return bin(hex2d(hex))
+
+# hex to decimal
+def hex2d(hex):
+    return int(hex, 16)
+
+# decimal to binary
+def d2b(dec):
+    return bin(int(dec))
+
+def b2d(bin):
+    return int(bin, 2)
+
+# hex to binary
+def b2hex(b):
+    return hex(int(b, 2))[2:]
