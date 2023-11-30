@@ -10,7 +10,7 @@ fn main() {
         file = arg1;
     }
 
-    let mut values = vec![0];
+    let mut values = vec![];
 
     if let Ok(lines) = files::read_lines(file) {
         for line in lines {
