@@ -1,21 +1,20 @@
-use std::fs::File;
-use std::io::{self, BufRead};
-use std::path::Path;
+#[path = "../modules/files.rs"]
+mod files;
 
-// The output is wrapped in a Result to allow matching on errors
-// Returns an Iterator to the Reader of the lines of the file.
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where P: AsRef<Path>, {
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
-}
+use std::env;
 
 fn main() {
+    let mut file = "test.txt".to_string();
+
+    if let Some(arg1) = env::args().nth(1) {
+        file = arg1;
+    }
+
     let mut snacks = vec![0];
 
     let mut it = 0;
 
-    if let Ok(lines) = read_lines("input/test.txt") {
+    if let Ok(lines) = files::read_lines(file) {
         for line in lines {
             if let Ok(ip) = line {
                 if ip == "" {
