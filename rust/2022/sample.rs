@@ -7,7 +7,7 @@ fn main() {
     let mut file = "test.txt".to_string();
 
     if let Some(arg1) = env::args().nth(1) {
-        file = arg1;
+        file = "full.txt".to_string();
     }
 
     let mut values = vec![];
