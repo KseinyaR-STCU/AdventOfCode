@@ -4,7 +4,7 @@ mod files;
 use std::env;
 
 fn get_file() -> String {
-    return if let Some(arg1) = env::args().nth(1) {
+    return if let Some(_arg1) = env::args().nth(1) {
         "full.txt".to_string()
     }
     else {
@@ -41,5 +41,5 @@ fn part1(values: Vec<u32>) {
 
 fn part2(values: Vec<u32>) {
 
-    println!("part 1: {}", values.len())
+    println!("part 2: {}", values.len())
 }
