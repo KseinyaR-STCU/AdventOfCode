@@ -4,6 +4,7 @@ mod files;
 use std::env;
 use std::collections::HashMap;
 use std::cmp::Ordering;
+use std::cmp::max;
 
 #[derive(Debug, Clone, PartialEq, Default)]
 struct Hand {
@@ -57,7 +58,6 @@ fn part1(hands: Vec<Hand>) {
     let mut start = 0;
 
     total_winnings += add_up(&highcards, start);
-    //println!("part 1: {:?}", total_winnings);
     start = highcards.len();
     total_winnings += add_up(&onepair, start);
     start += onepair.len();
@@ -69,35 +69,21 @@ fn part1(hands: Vec<Hand>) {
     start += fulls.len();
     total_winnings += add_up(&fours, start);
     start += fours.len();
-    // println!("part 1: {:?}", highcards);
-    // println!("part 1: {:?}", onepair);
-    // println!("part 1: {:?}", twopair);
-    // println!("part 1: {:?}", threes);
-    // println!("part 1: {:?}", fulls);
-    // println!("part 1: {:?}", fours);
-    // println!("part 1: {:?}", fives);
-    //println!("part 1: {:?}", total_winnings);
     total_winnings += add_up(&fives, start);
 
     println!("part 1: {:?}", total_winnings);
-   // println!("part 1: {:?}", fives);
 }
 
 fn split_by_type_and_sort(hands: &Vec<Hand>, hand_type: Type) -> Vec<&Hand> {
     let mut filtered = hands.iter().filter(|&n| n.hand_type == hand_type).collect::<Vec<&Hand>>();
-    //println!("part 1: {:?}", filtered);
     filtered.sort_by(|a, b| sort_hands(a, b));
-    //println!("part 1: {:?}", filtered);
     filtered
 }
 
 fn add_up(cards: &Vec<&Hand>, start: usize) -> usize {
     let mut winnings = 0usize;
-    //println!("new card list");
     for (i, card) in cards.iter().enumerate() {
-        //println!("{}", winnings);
         winnings += (i + 1 + start) * card.bid;
-        //println!("{}", winnings);
     }
     winnings
 }
@@ -117,6 +103,15 @@ fn compare_card(a: char, b: char) -> Ordering {
         return Ordering::Equal;
     }
 
+    //Uncomment for part 2
+    // if a == 'J' {
+    //     return Ordering::Less;
+    // }
+
+    // if b == 'J' {
+    //     return Ordering::Greater;
+    // }
+
     let face_card = match (a, b) {
         ('A', _) => Ordering::Greater,
         (_, 'A') => Ordering::Less,
@@ -124,7 +119,9 @@ fn compare_card(a: char, b: char) -> Ordering {
         (_, 'K') => Ordering::Less,
         ('Q', _) => Ordering::Greater,
         (_, 'Q') => Ordering::Less,
+        //Comment out for part 2
         ('J', _) => Ordering::Greater,
+        //Comment out for part 2
         (_, 'J') => Ordering::Less,
         ('T', _) => Ordering::Greater,
         (_, 'T') => Ordering::Less,
@@ -153,8 +150,15 @@ fn parse(value: String) -> Hand {
 fn check_type(value: &str) -> Type {
     let mut cards = get_card_types();
 
+    let mut j_count = 0u16;
     for v in value.chars() {
-        *cards.get_mut(&v).unwrap() += 1;
+        //Uncomment for part 2
+        //if v != 'J' {
+            *cards.get_mut(&v).unwrap() += 1;
+        // }
+        // else {
+        //     j_count += 1;
+        // }
     }
 
     let max_count_key = cards
@@ -162,7 +166,12 @@ fn check_type(value: &str) -> Type {
         .max_by(|a, b| a.1.cmp(&b.1))
         .unwrap();
 
-    let max_count = max_count_key.1;
+    let mut full_count = max_count_key.1;
+
+    //Uncomment for part 2
+    //let binding = max_count + j_count;
+    //Uncomment for part 2
+    //full_count = max(max_count, &binding);
 
     let max_count_2 = cards
         .iter()
@@ -171,7 +180,7 @@ fn check_type(value: &str) -> Type {
         .map(|(_k, v)| v)
         .unwrap();
 
-    return match (max_count, max_count_2) {
+    return match (full_count, max_count_2) {
         (5, _) => Type::FiveOfAKind,
         (4, _) => Type::FourOfAKind,
         (3, 2) => Type::FullHouse,
@@ -188,6 +197,7 @@ fn get_card_types() -> HashMap<char, u16> {
     cards.insert('A', 0);
     cards.insert('K', 0);
     cards.insert('Q', 0);
+    //Comment out for part 2
     cards.insert('J', 0);
     cards.insert('T', 0);
     cards.insert('9', 0);
