@@ -13,33 +13,21 @@ fn get_file() -> String {
 }
 
 fn main() {
-    let mut values = vec![];
+    let values: Vec<String> = files::read_lines(get_file())
+        .unwrap()
+        .map(|line| line.unwrap())
+        .collect();
 
-    if let Ok(lines) = files::read_lines(get_file()) {
-        for line in lines {
-            if let Ok(ip) = line {
-                let new = ip.parse::<u32>();
-
-                if let Ok(n) = new {
-                    values.push(n);                    
-                }
-            }
-        }
-    }
-
-    part1(values);
-    // or clone to run both parts at once
-    //part1(values.clone());
-
-    //part2(values);
+    part1(&values);
+    //part2(&values);
 }
 
-fn part1(values: Vec<u32>) {
+fn part1(values: &Vec<String>) {
 
     println!("part 1: {}", values.len());
 }
 
-fn part2(values: Vec<u32>) {
+// fn part2(values: &Vec<String>) {
 
-    println!("part 2: {}", values.len())
-}
+//     println!("part 2: {}", values.len())
+// }
