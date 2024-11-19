@@ -23,7 +23,7 @@ fn main() {
         }
     }
 
-    part1(values.clone());
+    part1(values);
     part2(values);
 }
 
