@@ -1,7 +1,9 @@
+import codecs
+
 current = 0
 largest = 0
 
-with open('fulldata.txt') as f:
+with codecs.open('1.txt', encoding = 'utf-16') as f:
     for line in f:
         if line.rstrip():
             current = current + int(line.rstrip())
@@ -16,7 +18,7 @@ print(largest)
 current = 0
 sums = []
 
-with open('fulldata.txt') as f:
+with codecs.open('1.txt', encoding = 'utf-16') as f:
     for line in f:
         if line.rstrip():
             current = current + int(line.rstrip())
