@@ -2,7 +2,9 @@
 **\testdata.txt
 **\test.txt
 **\full.txt
-**\*.txt
+**\in.txt
+**\in.tst
+**\session.txt
 
 *.exe
 *.pdb
