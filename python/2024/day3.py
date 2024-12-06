@@ -17,7 +17,6 @@ pattern = r"mul\(\d+,\d+\)"
 for line in data:
     matches = re.findall(pattern, line)
 
-    print(matches)
     for m in matches:
         p1 += get_nums(m)
 
