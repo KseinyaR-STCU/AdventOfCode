@@ -1,69 +1,26 @@
-from methods import  read_data
+from methods import  read_data, read_grid, find_distinct_char_in_grid, get_grid_size, in_bounds, get_one_step, get_point_value, turn_clockwise
 import copy
 
 data = read_data('in.tst')
 data = read_data('in.txt')
 
-guard = (0,0)
+grid = read_grid(data)
 
-grid = []
-for line in data:
-    grid.append(list(map(lambda n: n, line[::1])))
+guard = find_distinct_char_in_grid(grid, '^')
 
-for i in range(0, len(grid)):
-    for j in range(0, len(grid[0])):
-        if(grid[i][j] == '^'):
-            guard = (i,j)
-            grid[i][j] = '.'
+grid[guard[0]][guard[1]] = '.'
 
-maxI = len(grid)
-maxJ = len(grid[0])
+maxI, maxJ = get_grid_size(grid)
 
-def in_bounds(point):
-    if(point[0] >= 0 and point[0] < maxI and point[1] >=0 and point[1] < maxJ):
-        return True
-    else:
-        return False
-
-
-def move_right(g):
-    new_g = (g[0], g[1] + 1)
-    if(not in_bounds(new_g)):
+def move_or_turn(g, dir):
+    new_g = get_one_step(g, dir)
+    if(not in_bounds(new_g, grid)):
         return ((-1, -1), 'done')
-    if(grid[new_g[0]][new_g[1]] == '#'):
-        return ((g[0] + 1, g[1]), 'd')
+    if(get_point_value(new_g, grid) == '#'):
+        new_dir = turn_clockwise(dir)
+        return (get_one_step(g, new_dir), new_dir)
     else:
-        return (new_g, 'r')
-
-
-def move_up(g):
-    new_g = (g[0] -1, g[1])
-    if(not in_bounds(new_g)):
-        return ((-1, -1), 'done')
-    if(grid[new_g[0]][new_g[1]] == '#'):
-        return ((g[0], g[1] + 1), 'r')
-    else:
-        return (new_g, 'u')
-
-
-def move_left(g):
-    new_g = (g[0], g[1] -1)
-    if(not in_bounds(new_g)):
-        return ((-1, -1), 'done')
-    if(grid[new_g[0]][new_g[1]] == '#'):
-        return ((g[0] - 1, g[1]), 'u')
-    else:
-        return (new_g, 'l')
-
-
-def move_down(g):
-    new_g = (g[0] + 1, g[1])
-    if(not in_bounds(new_g)):
-        return ((-1, -1), 'done')
-    if(grid[new_g[0]][new_g[1]] == '#'):
-        return ((g[0], g[1] -1), 'l')
-    else:
-        return (new_g, 'd')
+        return (new_g, dir)
 
 
 p1 = 0
@@ -82,16 +39,7 @@ def move():
         else:
             distinct.add(g)
             alls.add((g, dir))
-
-            if(dir == 'u'):
-                g, dir = move_up(g)
-            elif(dir == 'r'):
-                g, dir = move_right(g)
-            elif(dir == 'l'):
-                g, dir = move_left(g)
-            elif(dir == 'd'):
-                g, dir = move_down(g)
-            
+            g, dir = move_or_turn(g, dir)            
 
 
     return False
