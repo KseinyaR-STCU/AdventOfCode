@@ -1,8 +1,16 @@
 from methods import  read_data, read_grid, find_distinct_char_in_grid, get_grid_size, in_bounds, get_one_step, get_point_value, turn_clockwise
 import copy
+import argparse
+
+
+parser = argparse.ArgumentParser(description='Read input')
+parser.add_argument('--test', type=bool, default=False)
+args = parser.parse_args()
 
 data = read_data('in.tst')
-data = read_data('in.txt')
+
+if(not args.test):
+    data = read_data('in.txt')
 
 grid = read_grid(data)
 
