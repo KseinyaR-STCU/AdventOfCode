@@ -44,20 +44,19 @@ def queue_it_up(equation):
         times = mul(current_amount, next_num)
         concat = int( str(current_amount) + str(next_num))
 
+        if(plus > expected_total and times > expected_total and concat > expected_total):
+            continue
+
         if(len(more_nums) <= 1):
             if(plus == expected_total or times == expected_total or concat == expected_total):
-                # print(expected_total)
                 return True
         else:
-            #### WTF WOULD THESE CHECKS BREAK IT???
-            # if(plus <= expected_total):
-            #     queueue.append((plus, the_rest))
-            # if(times <= expected_total):
-            #     queueue.append((times, the_rest))
-            
-            queueue.append((plus, the_rest))
-            queueue.append((times, the_rest))
-            queueue.append((concat, the_rest))
+            if(plus <= expected_total):
+                queueue.append((plus, the_rest))
+            if(times <= expected_total):
+                queueue.append((times, the_rest))
+            if(concat <= expected_total):
+                queueue.append((concat, the_rest))
     
     return False
 
