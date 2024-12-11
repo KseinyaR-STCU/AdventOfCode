@@ -6,9 +6,8 @@ from collections import defaultdict
 
 st = time.time()
 
-
 data = read_data('in.tst')
-#data = read_data('in.txt')
+data = read_data('in.txt')
 
 is_file = True
 
@@ -58,77 +57,65 @@ print('part 1')
 print(p1)
 
 
-files = []
+def get_leftmost_spot(chars, size_needed):
+    size_got = 0
 
-section_count = 0
-character = chars[0]
-ii = 0
-
-for c in chars:
-    if(character != c):
-        files.append((ii, character, section_count))
-        character = c
-        section_count = 1
-        ii += 1
-    else:
-        section_count += 1
-    
+    for i in range(0, len(chars)):
+        if(chars[i] == '.'):
+            size_got += 1
+        else:
+            size_got = 0
         
-files.append((ii, character, section_count))
+        if(size_got == size_needed):
+            return (i-size_got +1, i)
+    
+    return (-1, -1)
 
-print('files',files)
 
-reordered = []
-i = len(files) - 1
-ci = 0
 
-moved = set()
+curr_char = [x for x in chars if x != '.'][-1]
+curr_char_size = 0
 
-last_index = -1
-count_inserts = 0
+already_moved = set()
+print(curr_char)
+for i in range(len(chars) -1, 0, -1):
+    # print('loop')
+    if(chars[i] == curr_char):
+        curr_char_size += 1
+    else:
+        # time to move the last thing now that i know the size
+        if(curr_char != '.' and curr_char_size > 0 and curr_char not in already_moved):
+            # print('current to move', curr_char, curr_char_size)
+            #find indexes of leftmost fitting spot
+            start, end = get_leftmost_spot(chars, curr_char_size)
+            # print('leftmost', start, end)
+            if(start > -1 and end > -1 and start < i):
+                for j in range(start, end + 1):
+                    chars[j] = curr_char
+                
+                # print('removing', i +1, curr_char_size)
+                for j in range(i +1, i +1 + curr_char_size):
+                    chars[j] = '.'
+            
+            already_moved.add(curr_char)
+        
+        # reset to new char
+        curr_char = chars[i]
+        curr_char_size = 1
+    
+    # print(chars)
 
-while i >= 0:
-    index, last, len_last = files[i]
-
-    if(last != '.'):
-        fitting = [n for n in files if n[1] == '.' and n[2] >= len_last and n[0] > last_index]
-        if(len(fitting) > 0):
-            fits = fitting[0]
-            files_id = fits[0]
-            last_index = files_id - 1
-            if(fits[2] == len_last):
-                del files[i]
-                files[files_id] = (fits[0] + count_inserts, last, fits[2])
-                print('replaced perfect fit')
-                print('id', files_id)
-                print(files)
-                # replace
-            else:
-                del files[i]
-                files[files_id] = (fits[0] + count_inserts, fits[1], fits[2] - len_last)
-                files.insert(files[files_id][0] + count_inserts, (last_index, last, len_last))
-                count_inserts += 1
-                print('big enough fit')
-                print('id', files_id)
-                print('files', files)
-                print('fits', fits)
-                print('last', last)
-                #splits
-
-    i -= 1
-    print()
 
 p2 = 0
 
-print(files)
-for r in range(0, len(char_string)):
-    if(char_string[r] != '.'):
-        p2 += (r * int(char_string[r]))
+for r in range(0, len(chars)):
+    if(chars[r] != '.'):
+        p2 += (r * int(chars[r]))
 
 print('part 2')
 print(p2)
 
-print(char_string)
+# print(chars)
 
 et = time.time()
 elapsed_time = et - st
