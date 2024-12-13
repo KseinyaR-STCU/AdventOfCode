@@ -12,7 +12,6 @@ class Equation:
     def __init__(self, a, b, prize):
         self.a = a
         self.b = b
-        print(prize)
         self.prize = prize
         self.i = a[0]
         self.j = b[0]
@@ -23,6 +22,7 @@ class Equation:
     
     def print(self):
         print(self.i, self.j, self.k)
+        print(self.x, self.y, self.z)
 
 
 def parse_button(line):
@@ -32,11 +32,9 @@ def parse_button(line):
     return (int(x), int(y))
 
 def parse_prize(line):
-    print(line)
     parts = line.split('=')
     x = parts[1].split(',')[0]
     y = parts[2]
-    print(x,y)
     return (int(x), int(y))
 
 buttonA = (0,0)
@@ -60,49 +58,37 @@ for line in data:
         temp = parse_prize(line)
         equations.append(Equation(buttonA, buttonB, temp))
 
+def solve(equation, add = 0):
+    # equation.print()
+    bigk = equation.k + add
+    bigz = equation.z + add
 
-def solve(equation):
-    opts = []
-    equation.print()
-    for a in range(0, 101):
-        for b in range(0, 101):
-            tot = (a * equation.i) + (b * equation.j)
-            tot2 = (a * equation.x) + (b * equation.y)
-            if(tot == equation.k and tot2 == equation.z):
-                opts.append((a, b))
+    b = ((bigz * equation.i) - (equation.x * bigk))/((equation.i * equation.y)-(equation.x * equation.j))
+
+    a = ((bigz * equation.j) - (equation.y * bigk))/((equation.j * equation.x)-(equation.i * equation.y))
     
-    return opts
-
-def min_tokens(all_opts):
-    if(len(all_opts) == 0):
+    if (a < 0 or b < 0 or int(a) != a or int(b) != b):
         return 0
-
-    first_opt = all_opts[0]
-    min = (3 * first_opt[0]) + first_opt[1]
-
-    if(len(all_opts) == 1):
-        return min
-
-    for opt in all_opts[1:]:
-        tot = (3 * opt[0]) + opt[1]
-        if(tot < min):
-            min = tot
-
-    return min
+    
+    return (3 * a) + b
 
 p1 = 0
 
 for e in equations:
-    all_opts = solve(e)
-    print(all_opts)
-    min =  min_tokens(all_opts)
-    print(min)
-    print()
+    min = solve(e)
     p1 += min
 
 print('part 1')
 print(p1)
 
+p2 = 0
+
+for e in equations:
+    min = solve(e, 10000000000000)
+    p2 += min
+
+print('part 2')
+print(p2)
 
 et = time.time()
 elapsed_time = et - st
