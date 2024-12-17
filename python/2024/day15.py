@@ -73,26 +73,19 @@ def do_step(point, move):
         return point
     elif(next_block == 'O'):
         can_move, next_possible = get_nexts(next_step, move)
-        print('next possible', next_possible)
         if(not can_move):
             return point
         else:
-            print('updating', next_possible, next_step)
-            # print_grid()
             grid[next_possible[0]][next_possible[1]] ='O'
             grid[next_step[0]][next_step[1]] = '.'
+
             return next_step
-            # print_grid()
     
     return point
 
 
-print(robot)
-
 for move in moves:
-    print('move', move)
     robot = do_step(robot, move)
-    # print_grid()
 
 p1 = 0
 

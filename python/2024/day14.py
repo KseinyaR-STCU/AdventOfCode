@@ -103,7 +103,7 @@ for i in range(1, 10000):
             
             print(make_line)
 
-        print(i)
+        print(i + 100)
         print()
         time.sleep(0.5)
 
